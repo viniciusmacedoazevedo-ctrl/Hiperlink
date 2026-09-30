@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.gestaohiperlink.com.br/sitemap.xml
