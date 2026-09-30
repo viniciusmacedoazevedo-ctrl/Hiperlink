@@ -20,6 +20,10 @@ export function InvestmentSection() {
           intro={investment.intro}
         />
 
+        <p className="price-starting" data-reveal>
+          <Icon name="info" size={16} />
+          {investment.startingNote}
+        </p>
         <div className="price-fixed">
           {investment.fixed.map((item, i) => (
             <div key={item.component} data-reveal data-reveal-delay={String(i * 120)}>
@@ -31,8 +35,9 @@ export function InvestmentSection() {
                   <h3>{item.component}</h3>
                 </div>
                 <p className="price-card__value">
+                  {item.pricePrefix && <span className="price-card__prefix">{item.pricePrefix}</span>}
                   <strong>{item.price}</strong>
-                  <span>{item.period}</span>
+                  <span className="price-card__period">{item.period}</span>
                 </p>
                 <p className="price-card__desc">{item.description}</p>
               </TiltCard>

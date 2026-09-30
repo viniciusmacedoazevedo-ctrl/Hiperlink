@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { hero } from '../../data/hiperlink';
 import { Icon } from '../../components/common/Icon';
-import { Logo } from '../../components/common/Logo';
+import { BrandBadge } from '../../components/common/BrandBadge';
 import { WebGLStage } from '../../components/common/WebGLStage';
 import { useParallax } from '../../hooks/useParallax';
 
@@ -19,7 +19,7 @@ export function HeroSection() {
       <div className="container hl-hero__inner">
         <div className="hl-hero__copy">
           <div className="hl-hero__logo" data-reveal>
-            <Logo brand="hiperlink" height={64} eager />
+            <BrandBadge brand="hiperlink" height={74} />
           </div>
 
           <p className="hl-hero__eyebrow" data-reveal data-reveal-delay="80">

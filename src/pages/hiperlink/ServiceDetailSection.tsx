@@ -1,5 +1,5 @@
 import { useRef, type KeyboardEvent } from 'react';
-import { BadgeCheck, Check } from 'lucide-react';
+import { BadgeCheck, Check, ChevronRight } from 'lucide-react';
 import { serviceDetail, services } from '../../data/hiperlink';
 import { Icon } from '../../components/common/Icon';
 import { SectionHeading } from '../../components/common/SectionHeading';
@@ -69,9 +69,7 @@ export function ServiceDetailSection({ active, onChange }: ServiceDetailSectionP
                     <Icon name={s.icon} size={20} />
                   </span>
                   <span className="detail-tab__label">{s.title}</span>
-                  <span className="detail-tab__index" aria-hidden="true">
-                    0{i + 1}
-                  </span>
+                  <ChevronRight size={18} className="detail-tab__chevron" aria-hidden="true" />
                 </button>
               );
             })}
@@ -98,11 +96,11 @@ export function ServiceDetailSection({ active, onChange }: ServiceDetailSectionP
               </div>
               <ul className="detail-modules">
                 {current.scope.map((item, i) => (
-                  <li key={item} style={{ ['--i' as string]: i }}>
-                    <span className="detail-modules__num" aria-hidden="true">
-                      {String(i + 1).padStart(2, '0')}
+                  <li key={item.label} style={{ ['--i' as string]: i }}>
+                    <span className="detail-modules__icon" aria-hidden="true">
+                      <Icon name={item.icon} size={20} />
                     </span>
-                    <span className="detail-modules__label">{item}</span>
+                    <span className="detail-modules__label">{item.label}</span>
                     <Check size={18} className="detail-modules__check" aria-hidden="true" />
                   </li>
                 ))}

@@ -1,4 +1,23 @@
 import {
+  ArchiveRestore,
+  BrickWall,
+  Building,
+  Cable,
+  Cloud,
+  DatabaseBackup,
+  FileChartColumn,
+  FileCheck,
+  Funnel,
+  Gauge,
+  HardDrive,
+  Info,
+  MonitorSmartphone,
+  Play,
+  Settings2,
+  Timer,
+  UserLock,
+  Workflow,
+  Wrench,
   Activity,
   AtSign,
   BadgeCheck,
@@ -51,6 +70,25 @@ import {
 
 /** Mapa central de ícones — os arquivos de dados referenciam ícones por estas chaves. */
 const icons = {
+  archiveRestore: ArchiveRestore,
+  brickWall: BrickWall,
+  building: Building,
+  cable: Cable,
+  cloud: Cloud,
+  databaseBackup: DatabaseBackup,
+  fileChart: FileChartColumn,
+  fileCheck: FileCheck,
+  funnel: Funnel,
+  gauge: Gauge,
+  hardDrive: HardDrive,
+  info: Info,
+  devices: MonitorSmartphone,
+  play: Play,
+  settingsCog: Settings2,
+  timer: Timer,
+  userLock: UserLock,
+  workflow: Workflow,
+  wrench: Wrench,
   activity: Activity,
   at: AtSign,
   badge: BadgeCheck,
@@ -102,7 +140,12 @@ const icons = {
 
 export type IconName = keyof typeof icons;
 
-export function Icon({ name, ...props }: { name: IconName } & LucideProps) {
-  const Cmp = icons[name];
+export const iconNames = Object.keys(icons).sort() as IconName[];
+
+export const isIconName = (name: string): name is IconName => Object.prototype.hasOwnProperty.call(icons, name);
+
+/** Aceita nomes vindos do painel/API; nomes desconhecidos usam o ícone "building". */
+export function Icon({ name, ...props }: { name: IconName | string } & LucideProps) {
+  const Cmp = icons[isIconName(name) ? name : 'building'];
   return <Cmp aria-hidden="true" focusable="false" strokeWidth={1.75} {...props} />;
 }

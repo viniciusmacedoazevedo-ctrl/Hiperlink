@@ -1,24 +1,27 @@
 /**
  * Conteúdo da página PSG Dados ("/psg-dados").
  *
- * FONTE: folder "PSG Dados CNJ 243.pdf" (3 páginas) e banner institucional da PSG Dados.
+ * FONTE: folder "PSG Dados CNJ 243.pdf" (3 páginas), banner institucional da PSG Dados
+ * e dados comerciais informados pelo cliente (valores "a partir de", contatos e o
+ * posicionamento com foco em backup, proteção e continuidade).
  * Os textos foram transcritos do material. NÃO acrescente interpretações jurídicas,
  * garantias de conformidade, preços ou funcionalidades que não constem no documento.
  */
 import type { IconName } from '../components/common/Icon';
-import type { ContactInfo, IconCard, NavLink } from './types';
+import type { IconCard, NavLink } from './types';
 
 export const brand = {
   name: 'PSG Dados',
   tagline: 'Políticas, Segurança e Governança de Dados',
 };
 
+/** Ordem das seções segue a hierarquia: proteção/backup → gestão → conformidade CNJ. */
 export const nav: NavLink[] = [
-  { label: 'Provimentos', href: '#provimentos' },
-  { label: '5 Etapas', href: '#etapas' },
+  { label: 'Backup', href: '#backup' },
   { label: 'Gestão', href: '#gestao' },
   { label: 'Incluído', href: '#incluido' },
-  { label: 'Backup', href: '#backup' },
+  { label: 'Provimentos', href: '#provimentos' },
+  { label: '5 Etapas', href: '#etapas' },
   { label: 'Investimento', href: '#investimento' },
   { label: 'Contato', href: '#contato' },
 ];
@@ -31,27 +34,46 @@ export const normativeSource =
   'Fonte normativa: Provimento CNJ nº 213/2026, com alterações do Provimento CNJ nº 243/2026.';
 
 /* ------------------------------------------------------------------ HERO (página 1) */
+/**
+ * Hierarquia do hero:
+ * 1º Proteção + Backup + Continuidade  (mensagem principal)
+ * 2º Segurança + Governança + Infraestrutura
+ * 3º Adequação aos requisitos do CNJ  (contexto/conformidade)
+ */
 export const hero = {
-  eyebrow: 'Provimento CNJ nº 243/2026',
+  eyebrow: 'Backup · Proteção · Continuidade',
   title: 'Seu cartório protegido, conectado e preparado para não parar.',
   /** Trecho do título destacado visualmente (deve existir dentro de `title`). */
   titleHighlight: 'protegido, conectado',
   subtitle:
-    'Uma estrutura de gestão de TI para apoiar a adequação aos padrões mínimos de TIC, segurança, continuidade, proteção de dados, rastreabilidade e governança estabelecidos pelo CNJ.',
-  strip: ['Uma única empresa', 'As 5 etapas', 'Um mesmo contrato', 'Início imediato'],
-  primaryCta: { label: 'Conheça a solução', href: '#etapas' },
+    'Backup de servidores na nuvem com Acronis, proteção de dados e recuperação para manter a operação contínua — com segurança, governança e infraestrutura de TI em uma única empresa.',
+  primaryPillars: [
+    { icon: 'databaseBackup', label: 'Backup Acronis' },
+    { icon: 'shieldCheck', label: 'Proteção de dados' },
+    { icon: 'archiveRestore', label: 'Continuidade e recuperação' },
+  ] satisfies { icon: IconName; label: string }[],
+  secondaryPillars: ['Segurança', 'Governança', 'Infraestrutura'],
+  compliance: 'Apoio à adequação aos padrões mínimos de TIC do CNJ — Provimento nº 243/2026',
+  strip: [
+    { icon: 'building', label: 'Uma única empresa' },
+    { icon: 'workflow', label: 'As 5 etapas' },
+    { icon: 'fileCheck', label: 'Um mesmo contrato' },
+    { icon: 'zap', label: 'Início imediato' },
+  ] satisfies { icon: IconName; label: string }[],
+  primaryCta: { label: 'Conheça a solução', href: '#backup' },
   secondaryCta: { label: 'Fale com a PSG Dados', href: '#contato' },
   /** Faixa institucional (banner fornecido). */
   offerings: [
-    { icon: 'users', label: 'Consultoria em Tecnologia da Informação' },
     { icon: 'cloudUpload', label: 'Backup de servidores na nuvem com Acronis Backup' },
+    { icon: 'users', label: 'Consultoria em Tecnologia da Informação' },
   ] satisfies { icon: IconName; label: string }[],
 };
 
 /* ------------------------------------------------------------------ PROVIMENTOS (página 1) */
 export const provisions = {
-  eyebrow: 'Por que isso importa?',
+  eyebrow: 'Conformidade CNJ',
   title: 'O contexto dos Provimentos CNJ',
+  lead: 'Por que isso importa?',
   items: [
     {
       number: 'nº 213/2026',
@@ -226,8 +248,26 @@ export const included = {
 
 /* ------------------------------------------------------------------ BACKUP (páginas 2 e 3 + banner) */
 export const backup = {
-  eyebrow: 'Backup e recuperação',
+  eyebrow: 'Proteção · Backup · Continuidade',
   title: 'Backup e recuperação',
+  /** Três frentes principais (conteúdo do folder e do banner). */
+  pillars: [
+    {
+      icon: 'cloudUpload',
+      title: 'Backup em nuvem com Acronis',
+      text: 'Backup de servidores na nuvem com Acronis Backup: backup automatizado, monitoramento e armazenamento externo.',
+    },
+    {
+      icon: 'rotateCcw',
+      title: 'Recuperação',
+      text: 'Testes documentados de restauração e Plano de Recuperação de Desastres (PRD), com RTO e RPO definidos.',
+    },
+    {
+      icon: 'lifeBuoy',
+      title: 'Continuidade',
+      text: 'Plano de Continuidade de Negócios (PCN) e Disaster Recovery dimensionado conforme criticidade, continuidade e arquitetura necessária.',
+    },
+  ] satisfies IconCard[],
   product: 'Backup Acronis / armazenamento',
   bannerLine: 'Backup de servidores na nuvem com Acronis Backup',
   text: 'Backup automatizado, monitoramento, armazenamento externo e testes documentados de restauração, conforme dimensionamento.',
@@ -250,6 +290,8 @@ export interface PriceItem {
   component: string;
   /** null = valor variável, dimensionado conforme o ambiente. */
   price: string | null;
+  /** Indica valor inicial (ex.: "A partir de"). */
+  pricePrefix?: string;
   period?: string;
   description: string;
   icon: IconName;
@@ -259,18 +301,21 @@ export const investment = {
   eyebrow: 'Investimento',
   title: 'Investimento mensal',
   intro: 'Uma estrutura de TI com custo previsível e componentes variáveis dimensionados conforme o ambiente.',
+  startingNote: 'Valores iniciais — o investimento final é dimensionado após o diagnóstico do ambiente e da serventia.',
   fixed: [
     {
       icon: 'settings',
       component: 'Gestão de TI',
-      price: 'R$ 600,00',
+      pricePrefix: 'A partir de',
+      price: 'R$ 499,00',
       period: '/mês',
       description: 'Gestão, suporte técnico, acompanhamento e escopo operacional da proposta-base.',
     },
     {
       icon: 'rocket',
       component: 'Implantação inicial das 5 etapas',
-      price: 'R$ 3.000,00',
+      pricePrefix: 'A partir de',
+      price: 'R$ 1.999,00',
       period: 'parcela única',
       description: 'Implantação, organização inicial, diagnóstico e estruturação da jornada das 5 etapas.',
     },
@@ -323,19 +368,23 @@ export const objective = {
   text: 'reduzir riscos, manter o cartório operando e transformar a adequação em um processo organizado, documentado e contínuo.',
 };
 
-/* ------------------------------------------------------------------ CONTATO */
-/**
- * ATENÇÃO: o folder não informa dados de contato da PSG Dados.
- * Preencha os campos abaixo quando os dados oficiais forem fornecidos.
- * Enquanto estiverem como null, a página exibe placeholders identificados.
- */
-export const contact: ContactInfo & { title: string; text: string; placeholder: string } = {
+/* ------------------------------------------------------------------ CONTATO (dados informados pelo cliente) */
+export interface PsgContact {
+  title: string;
+  text: string;
+  phones: string[];
+  whatsapp: { display: string; digits: string } | null;
+  email: string | null;
+  website: string | null;
+  addressLines: string[];
+}
+
+export const contact: PsgContact = {
   title: 'Fale com a PSG Dados',
   text: 'A PSG Dados dimensiona os componentes técnicos e os investimentos necessários após o diagnóstico do ambiente e da serventia.',
-  placeholder: '[DADO DE CONTATO DA PSG DADOS A INSERIR]',
-  addressLines: [],
-  phones: [],
-  whatsapp: null,
-  email: null,
-  website: null,
+  phones: ['(84) 3234-1513'],
+  whatsapp: { display: '(84) 99133-2868', digits: '5584991332868' },
+  email: 'comercial@psgdados.com.br',
+  website: 'www.psgdados.com.br',
+  addressLines: ['Av. Amintas Barros, 3700, Sala 701 A, CTC', 'Lagoa Nova, Natal/RN'],
 };

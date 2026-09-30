@@ -129,15 +129,7 @@
   }
 }
 .psg-hero__logo {
-  margin-bottom: 24px;
-}
-.psg-hero__logo .logo-plate {
-  padding: 8px 16px;
-  border-radius: 18px;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
-    0 20px 60px -20px rgba(47, 139, 255, 0.6),
-    0 12px 30px -16px rgba(0, 0, 0, 0.8);
+  margin-bottom: 14px;
 }
 .psg-hero__eyebrow {
   display: inline-flex;
@@ -154,16 +146,81 @@
   color: #cfe3ff;
 }
 .psg-hero__badge {
-  padding: 4px 10px;
-  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
   background: var(--accent-btn);
   color: #fff;
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
+}
+/* hierarquia 1: proteção + backup + continuidade */
+.psg-pillars {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+}
+@media (min-width: 560px) {
+  .psg-pillars {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.psg-pillars li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.25;
+  padding: 8px 12px 8px 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(74, 157, 255, 0.45);
+  background: linear-gradient(135deg, rgba(23, 101, 220, 0.35), rgba(23, 101, 220, 0.1));
+  box-shadow: 0 10px 30px -18px rgba(47, 139, 255, 0.9);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #fff;
+}
+.psg-pillars__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--accent-btn);
+  color: #fff;
+}
+/* hierarquia 2: segurança + governança + infraestrutura */
+.psg-pillars-secondary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 0;
+  margin-top: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-2);
+}
+.psg-pillars-secondary i {
+  margin: 0 10px;
+  font-style: normal;
+  color: var(--accent);
+}
+/* hierarquia 3: conformidade CNJ (contexto) */
+.psg-hero__compliance {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.psg-hero__compliance svg {
+  flex: none;
+  color: var(--accent-2);
 }
 .psg-hero__title {
   margin-top: 22px;
-  font-size: clamp(2.2rem, 4.2vw, 3.5rem);
+  font-size: clamp(2.1rem, 3.8vw, 3.15rem);
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.03em;
@@ -184,7 +241,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-top: 34px;
+  margin-top: 30px;
 }
 .psg-hero__visual {
   position: relative;
@@ -275,11 +332,16 @@
   font-weight: 700;
   font-size: 0.98rem;
 }
-.psg-strip__num {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: var(--accent);
+.psg-strip__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 10px;
+  background: rgba(23, 101, 220, 0.22);
+  border: 1px solid rgba(74, 157, 255, 0.35);
+  color: #8cc6ff;
 }
 
 /* ------------------------------------------------------------ PROVIMENTOS */
@@ -392,14 +454,20 @@
   letter-spacing: 0.08em;
 }
 .doc-card h3 {
-  margin-top: 18px;
-  font-size: clamp(2.2rem, 4vw, 3rem);
+  margin-top: 14px;
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
   font-weight: 800;
 }
 .doc-card p {
-  margin-top: 14px;
+  margin-top: 10px;
   color: var(--text-2);
-  font-size: 1.05rem;
+  font-size: 0.98rem;
+}
+.psg-provisions .section-title {
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+}
+.psg-provisions .doc-card__body {
+  padding: 26px 26px;
 }
 
 .provisions-focus {
@@ -440,7 +508,7 @@
 }
 .provisions-req__lead {
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
   font-weight: 700;
 }
 .provisions-req__list {
@@ -1469,9 +1537,30 @@
   line-height: 1;
   letter-spacing: -0.03em;
 }
-.price-card__value span {
+.price-card__value .price-card__period {
   font-size: 1.05rem;
   font-weight: 700;
+  color: var(--accent-2);
+}
+/* valor inicial: "A partir de" em destaque acima do número */
+.price-card__prefix {
+  flex-basis: 100%;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fcd34d;
+}
+.price-starting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -24px 0 22px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.price-starting svg {
+  flex: none;
   color: var(--accent-2);
 }
 .price-card__desc {
@@ -1704,55 +1793,87 @@
 .psg-contact__value:hover {
   color: var(--accent-2);
 }
-.psg-contact__placeholder {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  margin-top: 4px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.82rem;
-  color: #94a3b8;
+/* formulário no painel lateral */
+.psg-contact__form-title {
+  margin-bottom: 18px;
+  font-size: 1.3rem;
 }
-.psg-contact__placeholder .placeholder-badge {
-  font-family: var(--font-body);
-  color: #fbbf24;
+.psg-contact__list {
+  margin-top: 30px;
 }
-.psg-contact__form {
-  margin-top: 28px;
-  padding-top: 28px;
-  border-top: 1px solid var(--border);
-}
-
-/* formulário (reaproveitado) */
-.theme-psg .proposal-form {
+.psg-contact__address {
   display: grid;
-  gap: 16px;
-}
-.theme-psg .proposal-form label {
-  display: grid;
-  gap: 8px;
-  font-size: 0.88rem;
+  font-style: normal;
   font-weight: 600;
 }
-.theme-psg .proposal-form input,
-.theme-psg .proposal-form textarea {
-  width: 100%;
-  min-height: 50px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  border: 1px solid var(--border-strong);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text);
-  font: inherit;
+.psg-contact__map {
+  display: inline-flex;
+  margin-top: 4px;
+  min-height: 32px;
+  align-items: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent-2);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.psg-contact__value {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  overflow-wrap: anywhere;
 }
 
 /* rodapé */
 .theme-psg .site-footer {
   background: #020814;
 }
-.site-footer__source {
-  margin-top: 16px;
-  font-size: 0.82rem;
-  color: var(--muted);
+.footer-inline__back {
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------ BACKUP — pilares comerciais */
+.backup-pillars {
+  display: grid;
+  gap: 18px;
+  margin-top: clamp(40px, 6vw, 64px);
+}
+@media (min-width: 860px) {
+  .backup-pillars {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.backup-pillars > li {
+  height: 100%;
+}
+.backup-pillar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  padding: 30px 28px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(74, 157, 255, 0.35);
+  background:
+    radial-gradient(360px circle at 0% 0%, rgba(47, 139, 255, 0.28), transparent 60%),
+    linear-gradient(160deg, #0d2146, #081630);
+  box-shadow: 0 30px 60px -34px rgba(47, 139, 255, 0.6);
+}
+.backup-pillar__icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #2f8bff, #1452b8);
+  color: #fff;
+  box-shadow: 0 12px 30px -10px rgba(47, 139, 255, 0.8);
+  transform: translateZ(30px);
+}
+.backup-pillar h3 {
+  margin-top: 6px;
+  font-size: 1.3rem;
+}
+.backup-pillar p {
+  color: var(--text-2);
 }

@@ -17,16 +17,6 @@ function Row({ icon, label, children }: { icon: ReactNode; label: string; childr
   );
 }
 
-/** Enquanto um dado não for informado em src/data/psgDados.ts, exibe um placeholder identificado. */
-function Placeholder() {
-  return (
-    <span className="psg-contact__placeholder">
-      <span className="placeholder-badge">A inserir</span>
-      <span>{contact.placeholder}</span>
-    </span>
-  );
-}
-
 export function PsgContactSection() {
   return (
     <section id="contato" className="section psg-contact" aria-labelledby="psg-contato-title">
@@ -43,52 +33,39 @@ export function PsgContactSection() {
           <p className="section-intro" data-reveal data-reveal-delay="120">
             {contact.text}
           </p>
-          <div data-reveal data-reveal-delay="180">
-            <TransitionLink href="/" theme="hiperlink" className="btn btn--ghost psg-contact__back">
-              <ArrowLeft size={18} aria-hidden="true" />
-              Voltar para a Hiperlink
-            </TransitionLink>
-          </div>
-        </div>
 
-        <div className="psg-contact__panel glass" data-reveal="right" data-reveal-delay="120">
-          <ul className="psg-contact__list">
-            <Row icon={<Phone size={20} aria-hidden="true" />} label="Telefone">
-              {contact.phones.length ? (
-                contact.phones.map((p) => (
+          <ul className="psg-contact__list" data-reveal data-reveal-delay="160">
+            {contact.phones.length > 0 && (
+              <Row icon={<Phone size={20} aria-hidden="true" />} label="Telefone">
+                {contact.phones.map((p) => (
                   <a key={p} href={telHref(p)} className="psg-contact__value">
                     {p}
                   </a>
-                ))
-              ) : (
-                <Placeholder />
-              )}
-            </Row>
-            <Row icon={<MessageCircle size={20} aria-hidden="true" />} label="WhatsApp">
-              {contact.whatsapp ? (
+                ))}
+              </Row>
+            )}
+            {contact.whatsapp && (
+              <Row icon={<MessageCircle size={20} aria-hidden="true" />} label="WhatsApp">
                 <a
-                  href={whatsappHref(contact.whatsapp)}
+                  href={whatsappHref(contact.whatsapp.digits)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="psg-contact__value"
                 >
-                  Conversar pelo WhatsApp
+                  {contact.whatsapp.display}
+                  <span className="sr-only"> (abre o WhatsApp em nova aba)</span>
                 </a>
-              ) : (
-                <Placeholder />
-              )}
-            </Row>
-            <Row icon={<AtSign size={20} aria-hidden="true" />} label="E-mail">
-              {contact.email ? (
+              </Row>
+            )}
+            {contact.email && (
+              <Row icon={<AtSign size={20} aria-hidden="true" />} label="E-mail">
                 <a href={`mailto:${contact.email}`} className="psg-contact__value">
                   {contact.email}
                 </a>
-              ) : (
-                <Placeholder />
-              )}
-            </Row>
-            <Row icon={<Globe size={20} aria-hidden="true" />} label="Site">
-              {contact.website ? (
+              </Row>
+            )}
+            {contact.website && (
+              <Row icon={<Globe size={20} aria-hidden="true" />} label="Site">
                 <a
                   href={websiteHref(contact.website)}
                   target="_blank"
@@ -96,32 +73,43 @@ export function PsgContactSection() {
                   className="psg-contact__value"
                 >
                   {contact.website}
+                  <span className="sr-only"> (abre em nova aba)</span>
                 </a>
-              ) : (
-                <Placeholder />
-              )}
-            </Row>
-            <Row icon={<MapPin size={20} aria-hidden="true" />} label="Endereço">
-              {contact.addressLines.length ? (
+              </Row>
+            )}
+            {contact.addressLines.length > 0 && (
+              <Row icon={<MapPin size={20} aria-hidden="true" />} label="Endereço">
+                <address className="psg-contact__address">
+                  {contact.addressLines.map((l) => (
+                    <span key={l}>{l}</span>
+                  ))}
+                </address>
                 <a
                   href={mapsHref(contact.addressLines)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="psg-contact__value"
+                  className="psg-contact__map"
                 >
-                  {contact.addressLines.join(', ')}
+                  Ver no mapa <span className="sr-only">(abre em nova aba)</span>
                 </a>
-              ) : (
-                <Placeholder />
-              )}
-            </Row>
+              </Row>
+            )}
           </ul>
-          {contact.email && (
-            <div className="psg-contact__form">
-              <ProposalForm email={contact.email} company="PSG Dados" />
-            </div>
-          )}
+
+          <div data-reveal data-reveal-delay="200">
+            <TransitionLink href="/" theme="hiperlink" className="btn btn--ghost psg-contact__back">
+              <ArrowLeft size={18} aria-hidden="true" />
+              Voltar para a Hiperlink
+            </TransitionLink>
+          </div>
         </div>
+
+        {contact.email && (
+          <div className="psg-contact__panel glass" data-reveal="right" data-reveal-delay="120">
+            <h3 className="psg-contact__form-title">Solicitar proposta</h3>
+            <ProposalForm email={contact.email} company="PSG Dados" />
+          </div>
+        )}
       </div>
     </section>
   );

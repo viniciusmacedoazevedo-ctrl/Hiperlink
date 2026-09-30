@@ -48,14 +48,16 @@ export function PsgDadosPage() {
         cta={{ label: hero.secondaryCta.label, href: '#contato' }}
         switchLink={backLink}
         switchLinkMobile={backLinkMobile}
+        deferBrand
       />
       <main id="conteudo" tabIndex={-1}>
+        {/* Hierarquia: proteção/backup → gestão (segurança, governança, infraestrutura) → conformidade CNJ */}
         <PsgHeroSection />
-        <ProvisionsSection />
-        <StagesSection />
+        <BackupSection />
         <ManagementSection />
         <IncludedSection />
-        <BackupSection />
+        <ProvisionsSection />
+        <StagesSection />
         <InvestmentSection />
         <ObjectiveSection />
         <PsgContactSection />

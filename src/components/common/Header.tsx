@@ -13,10 +13,13 @@ interface HeaderProps {
   switchLink: ReactNode;
   /** Mesmo link, versão para o menu móvel. */
   switchLinkMobile: ReactNode;
+  /** Oculta o logo do cabeçalho enquanto o hero (que já exibe o logo) está na tela. */
+  deferBrand?: boolean;
 }
 
-export function Header({ brand, homeLabel, nav, cta, switchLink, switchLinkMobile }: HeaderProps) {
+export function Header({ brand, homeLabel, nav, cta, switchLink, switchLinkMobile, deferBrand = false }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(!deferBrand);
   const [open, setOpen] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -29,6 +32,7 @@ export function Header({ brand, homeLabel, nav, cta, switchLink, switchLinkMobil
       frame = 0;
       const y = window.scrollY;
       setScrolled(y > 24);
+      if (deferBrand) setPastHero(y > window.innerHeight * 0.55);
       const max = document.documentElement.scrollHeight - window.innerHeight;
       progressRef.current?.style.setProperty('--progress', String(max > 0 ? y / max : 0));
     };
@@ -41,7 +45,7 @@ export function Header({ brand, homeLabel, nav, cta, switchLink, switchLinkMobil
       window.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [deferBrand]);
 
   // Menu móvel: trava rolagem, Esc fecha, foco inicial e retorno do foco.
   useEffect(() => {
@@ -81,7 +85,11 @@ export function Header({ brand, homeLabel, nav, cta, switchLink, switchLinkMobil
 
   return (
     <>
-      <header className={`site-header ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-open' : ''}`}>
+      <header
+        className={`site-header ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-open' : ''} ${
+          pastHero || open ? '' : 'site-header--brand-deferred'
+        }`}
+      >
         <div className="site-header__progress" ref={progressRef} aria-hidden="true" />
         <div className="container site-header__inner">
           <a href="#topo" className="site-header__brand" aria-label={homeLabel}>

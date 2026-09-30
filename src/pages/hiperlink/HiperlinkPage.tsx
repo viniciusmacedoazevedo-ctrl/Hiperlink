@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { hero, nav, psgBridge, services } from '../../data/hiperlink';
+import { hero, nav, psgLink, services } from '../../data/hiperlink';
 import { Header } from '../../components/common/Header';
 import { Logo } from '../../components/common/Logo';
 import { SkipLink } from '../../components/common/SkipLink';
@@ -16,7 +16,6 @@ import { GuidelinesSection } from './GuidelinesSection';
 import { HeroSection } from './HeroSection';
 import { MottoBand } from './MottoBand';
 import { PrinciplesSection } from './PrinciplesSection';
-import { PsgBridgeSection } from './PsgBridgeSection';
 import { ServiceDetailSection } from './ServiceDetailSection';
 import { ServicesSection } from './ServicesSection';
 import { TeamSection } from './TeamSection';
@@ -27,7 +26,7 @@ export function HiperlinkPage() {
   const [scopeTab, setScopeTab] = useState(services.items[0].id);
 
   const switchLink = (
-    <TransitionLink href={psgBridge.href} theme="psg" className="switch-link switch-link--psg">
+    <TransitionLink href={psgLink.href} theme="psg" className="switch-link switch-link--psg">
       <Logo brand="psg" height={26} />
       <span>PSG Dados</span>
       <ArrowUpRight size={16} aria-hidden="true" />
@@ -44,6 +43,7 @@ export function HiperlinkPage() {
         cta={{ label: hero.secondaryCta.label, href: '#contato' }}
         switchLink={switchLink}
         switchLinkMobile={switchLink}
+        deferBrand
       />
       <main id="conteudo" tabIndex={-1}>
         <HeroSection />
@@ -59,7 +59,6 @@ export function HiperlinkPage() {
         <CasesSection />
         <DifferentialsSection />
         <ContactSection />
-        <PsgBridgeSection />
       </main>
       <Footer />
     </>

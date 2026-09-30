@@ -1,0 +1,26 @@
+{
+  "clients": [
+    {
+      "id": "grupo-potiguar",
+      "name": "Grupo Potiguar",
+      "logo": "",
+      "icon": "layers",
+      "description": "",
+      "segment": "",
+      "caseText": "Atuamos com gestão completa de infraestrutura e suporte estratégico, garantindo a continuidade dos negócios em múltiplas unidades.",
+      "services": ["Infraestrutura", "Suporte"],
+      "active": true,
+      "order": 1,
+      "highlight": "super"
+    },
+    { "id": "construtora-alianca", "name": "Construtora Aliança", "logo": "", "icon": "landmark", "description": "", "segment": "", "caseText": "", "services": [], "active": true, "order": 2, "highlight": "normal" },
+    { "id": "varejo-express", "name": "Varejo Express", "logo": "", "icon": "cart", "description": "", "segment": "", "caseText": "", "services": [], "active": true, "order": 3, "highlight": "normal" },
+    { "id": "clinica-vida", "name": "Clínica Vida", "logo": "", "icon": "hospital", "description": "", "segment": "", "caseText": "", "services": [], "active": true, "order": 4, "highlight": "normal" },
+    { "id": "logistica-nordeste", "name": "Logística Nordeste", "logo": "", "icon": "truck", "description": "", "segment": "", "caseText": "", "services": [], "active": true, "order": 5, "highlight": "normal" },
+    { "id": "hotel-paradise", "name": "Hotel Paradise", "logo": "", "icon": "hotel", "description": "", "segment": "", "caseText": "", "services": [], "active": true, "order": 6, "highlight": "normal" },
+    { "id": "advocacia-associados", "name": "Advocacia & Associados", "logo": "", "icon": "scale", "description": "", "segment": "", "caseText": "", "services": [], "active": true, "order": 7, "highlight": "normal" },
+    { "id": "industria-textil", "name": "Indústria Têxtil", "logo": "", "icon": "factory", "description": "", "segment": "", "caseText": "", "services": [], "active": true, "order": 8, "highlight": "normal" },
+    { "id": "colegio-futuro", "name": "Colégio Futuro", "logo": "", "icon": "graduation", "description": "", "segment": "", "caseText": "", "services": [], "active": true, "order": 9, "highlight": "normal" }
+  ],
+  "testimonials": []
+}

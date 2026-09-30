@@ -1,5 +1,6 @@
 import { backup } from '../../data/psgDados';
 import { Icon } from '../../components/common/Icon';
+import { TiltCard } from '../../components/common/TiltCard';
 import { useParallax } from '../../hooks/useParallax';
 
 export function BackupSection() {
@@ -41,10 +42,10 @@ export function BackupSection() {
         <div className="psg-backup__copy">
           <p className="eyebrow" data-reveal>
             <span className="eyebrow__line" aria-hidden="true" />
-            {backup.product}
+            {backup.eyebrow}
           </p>
           <h2 id="backup-title" className="section-title" data-reveal data-reveal-delay="60">
-            Backup e <span className="hl">recuperação</span>
+            Backup, proteção e <span className="hl">continuidade</span>
           </h2>
           <p className="psg-backup__banner" data-reveal data-reveal-delay="100">
             <Icon name="cloudUpload" size={20} />
@@ -80,6 +81,22 @@ export function BackupSection() {
             ))}
           </ul>
         </div>
+      </div>
+
+      <div className="container">
+        <ul className="backup-pillars">
+          {backup.pillars.map((p, i) => (
+            <li key={p.title} data-reveal data-reveal-delay={String(i * 110)}>
+              <TiltCard className="backup-pillar" max={5}>
+                <span className="backup-pillar__icon">
+                  <Icon name={p.icon} size={26} />
+                </span>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </TiltCard>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

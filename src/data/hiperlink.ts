@@ -140,8 +140,8 @@ export interface Service {
   title: string;
   /** Slide 5 — "Nossos Serviços Principais" */
   summary: string;
-  /** Slide 6 — "Nossos Serviços em Detalhe" */
-  scope: string[];
+  /** Slide 6 — "Nossos Serviços em Detalhe" (cada item com um ícone representativo) */
+  scope: { label: string; icon: IconName }[];
 }
 
 export const services = {
@@ -152,15 +152,15 @@ export const services = {
   items: [
     {
       id: 'administracao',
-      icon: 'sliders',
+      icon: 'settingsCog',
       title: 'Administração de TI',
       summary:
         'Gestão proativa do ambiente tecnológico, service desk especializado e inventário de ativos para garantir máxima eficiência operacional.',
       scope: [
-        'Service Desk Níveis I, II e III',
-        'Gestão de Ativos e Licenças',
-        'Inventário de Hardware/Software',
-        'Monitoramento de Recursos',
+        { label: 'Service Desk Níveis I, II e III', icon: 'headset' },
+        { label: 'Gestão de Ativos e Licenças', icon: 'keyRound' },
+        { label: 'Inventário de Hardware/Software', icon: 'hardDrive' },
+        { label: 'Monitoramento de Recursos', icon: 'activity' },
       ],
     },
     {
@@ -170,23 +170,23 @@ export const services = {
       summary:
         'Segurança de perímetro com Firewall/UTM, conexões VPN criptografadas e redes Wi-Fi corporativas com autenticação segura.',
       scope: [
-        'Firewall UTM e Proteção de Borda',
-        'VPN (Site-to-Site / Client-to-Site)',
-        'Segurança de Endpoint',
-        'Filtro de Conteúdo Web',
+        { label: 'Firewall UTM e Proteção de Borda', icon: 'brickWall' },
+        { label: 'VPN (Site-to-Site / Client-to-Site)', icon: 'network' },
+        { label: 'Segurança de Endpoint', icon: 'devices' },
+        { label: 'Filtro de Conteúdo Web', icon: 'funnel' },
       ],
     },
     {
       id: 'governanca',
-      icon: 'fileShield',
+      icon: 'database',
       title: 'Governança de Dados',
       summary:
         'Definição de políticas, conformidade com LGPD, proteção da informação e estratégias robustas de backup e recuperação.',
       scope: [
-        'Adequação à LGPD',
-        'Políticas de Segurança da Informação',
-        'Backup Corporativo e Restore',
-        'Controle de Acesso e Permissões',
+        { label: 'Adequação à LGPD', icon: 'scale' },
+        { label: 'Políticas de Segurança da Informação', icon: 'fileShield' },
+        { label: 'Backup Corporativo e Restore', icon: 'databaseBackup' },
+        { label: 'Controle de Acesso e Permissões', icon: 'userLock' },
       ],
     },
     {
@@ -196,23 +196,23 @@ export const services = {
       summary:
         'Atendimento ágil (Níveis I, II e III) remoto e presencial, focado na rápida resolução de incidentes e satisfação do usuário.',
       scope: [
-        'Atendimento Remoto e Presencial',
-        'Acordos de Nível de Serviço (SLA)',
-        'Manutenção Preventiva',
-        'Relatórios de Atendimentos',
+        { label: 'Atendimento Remoto e Presencial', icon: 'mapPin' },
+        { label: 'Acordos de Nível de Serviço (SLA)', icon: 'timer' },
+        { label: 'Manutenção Preventiva', icon: 'wrench' },
+        { label: 'Relatórios de Atendimentos', icon: 'fileChart' },
       ],
     },
     {
       id: 'infraestrutura',
-      icon: 'network',
+      icon: 'server',
       title: 'Infraestrutura de TI',
       summary:
         'Projetos de cabeamento estruturado, implementação de redes físicas e lógicas, virtualização e soluções em nuvem híbrida.',
       scope: [
-        'Cabeamento Estruturado',
-        'Redes LAN, WAN e Wi-Fi',
-        'Servidores e Virtualização',
-        'Soluções em Nuvem Híbrida',
+        { label: 'Cabeamento Estruturado', icon: 'cable' },
+        { label: 'Redes LAN, WAN e Wi-Fi', icon: 'wifi' },
+        { label: 'Servidores e Virtualização', icon: 'server' },
+        { label: 'Soluções em Nuvem Híbrida', icon: 'cloud' },
       ],
     },
   ] satisfies Service[],
@@ -271,94 +271,31 @@ export const team = {
 };
 
 /* ------------------------------------------------------------------ CLIENTES (slide 8) */
-export interface Client {
-  name: string;
-  /** Ícone ilustrativo usado no material original (não é o logo do cliente). */
-  icon: IconName;
-  /**
-   * Logo oficial do cliente — NÃO fornecido nos materiais.
-   * Para exibir, coloque o arquivo em src/assets/clients/ e importe-o aqui.
-   */
-  logo?: string;
-  featured?: boolean;
-}
-
+/**
+ * Textos da seção. A LISTA de clientes (nome, logo, destaque, ordem…) é
+ * administrada no painel /admin — conteúdo inicial em server/seed.json.
+ */
 export const clients = {
   eyebrow: 'Nossa experiência',
   title: 'Nossos Clientes',
   intro: 'Parcerias estratégicas construídas com confiança e resultados de longo prazo.',
-  featured: {
-    label: 'Cliente destaque',
-    name: 'Grupo Potiguar',
-    text: 'Atuamos com gestão completa de infraestrutura e suporte estratégico, garantindo a continuidade dos negócios em múltiplas unidades.',
-    tags: ['Infraestrutura', 'Suporte'],
-  },
+  featuredLabel: 'Cliente destaque',
   /** Números exibidos no slide 8. */
   stats: [
     { value: 100, prefix: '+', suffix: '', label: 'Projetos entregues' },
     { value: 98, prefix: '', suffix: '%', label: 'Retenção de clientes' },
   ],
-  items: [
-    { name: 'Grupo Potiguar', icon: 'layers', featured: true },
-    { name: 'Construtora Aliança', icon: 'landmark' },
-    { name: 'Varejo Express', icon: 'cart' },
-    { name: 'Clínica Vida', icon: 'hospital' },
-    { name: 'Logística Nordeste', icon: 'truck' },
-    { name: 'Hotel Paradise', icon: 'hotel' },
-    { name: 'Advocacia & Associados', icon: 'scale' },
-    { name: 'Indústria Têxtil', icon: 'factory' },
-    { name: 'Colégio Futuro', icon: 'graduation' },
-  ] as Client[],
 };
 
-/* ------------------------------------------------------------------ DEPOIMENTOS (sem conteúdo no material) */
-export interface Testimonial {
-  /**
-   * true = estrutura aguardando conteúdo real. Enquanto for true, o card é exibido
-   * com o selo "Espaço reservado" e NUNCA como um depoimento real.
-   */
-  isPlaceholder: boolean;
-  company: string;
-  companyLogo?: string;
-  personName?: string;
-  personRole?: string;
-  personPhoto?: string;
-  quote: string;
-}
-
-const TESTIMONIAL_PLACEHOLDER = '[DEPOIMENTO REAL DO CLIENTE A INSERIR]';
-
+/* ------------------------------------------------------------------ DEPOIMENTOS */
+/**
+ * Textos da seção. Os depoimentos são cadastrados no painel /admin.
+ * A seção só aparece quando existir ao menos um depoimento ATIVO.
+ */
 export const testimonials = {
   eyebrow: 'Experiência dos clientes',
   title: 'Depoimentos',
-  intro: 'Espaço preparado para receber os depoimentos reais dos clientes da Hiperlink.',
-  /**
-   * Defina como false para ocultar a seção até que os depoimentos reais sejam recebidos.
-   */
-  showSection: true,
-  items: [
-    {
-      isPlaceholder: true,
-      company: '[NOME DA EMPRESA]',
-      personName: '[NOME DA PESSOA]',
-      personRole: '[CARGO]',
-      quote: TESTIMONIAL_PLACEHOLDER,
-    },
-    {
-      isPlaceholder: true,
-      company: '[NOME DA EMPRESA]',
-      personName: '[NOME DA PESSOA]',
-      personRole: '[CARGO]',
-      quote: TESTIMONIAL_PLACEHOLDER,
-    },
-    {
-      isPlaceholder: true,
-      company: '[NOME DA EMPRESA]',
-      personName: '[NOME DA PESSOA]',
-      personRole: '[CARGO]',
-      quote: TESTIMONIAL_PLACEHOLDER,
-    },
-  ] as Testimonial[],
+  intro: 'A experiência de quem conta com a Hiperlink.',
 };
 
 /* ------------------------------------------------------------------ CASES (slide 9) */
@@ -462,8 +399,8 @@ export const contact: ContactInfo & {
   addressLabel: 'Corporate Tower Center',
   addressLines: ['Corporate Tower Center', 'Av. Amintas Barros, 3700, Lagoa Nova', 'Natal - RN, 59075-810'],
   phones: ['(84) 3234-1513', '(84) 99133-2868'],
-  // WhatsApp não identificado no material. Preencher quando confirmado, ex.: '5584991332868'.
-  whatsapp: null,
+  // WhatsApp informado pelo cliente (mesmo número do celular do material). Formato: DDI + DDD + número.
+  whatsapp: '5584991332868',
   email: 'denis@gestaohiperlink.com.br',
   website: 'www.gestaohiperlink.com.br',
   cnpj: '07.538.485/0001-10',
@@ -472,18 +409,9 @@ export const contact: ContactInfo & {
   ctaButton: 'Solicitar proposta',
 };
 
-/* ------------------------------------------------------------------ PONTE PARA A PSG DADOS */
-export const psgBridge = {
-  eyebrow: 'Solução especializada',
-  title: 'PSG Dados',
-  subtitle: 'Políticas, Segurança e Governança de Dados',
-  /** Texto do folder "PSG Dados CNJ 243". */
-  text: 'Uma estrutura de gestão de TI para apoiar a adequação aos padrões mínimos de TIC, segurança, continuidade, proteção de dados, rastreabilidade e governança estabelecidos pelo CNJ.',
-  /** Faixa institucional da PSG Dados (banner fornecido). */
-  highlights: [
-    { icon: 'users', label: 'Consultoria em Tecnologia da Informação' },
-    { icon: 'cloudUpload', label: 'Backup de servidores na nuvem com Acronis Backup' },
-  ] satisfies { icon: IconName; label: string }[],
-  cta: 'Conheça a PSG Dados',
+/* ------------------------------------------------------------------ LINK PARA A PSG DADOS */
+/** Acesso à página da PSG Dados (botão do cabeçalho e rodapé). */
+export const psgLink = {
+  label: 'PSG Dados',
   href: '/psg-dados',
 };

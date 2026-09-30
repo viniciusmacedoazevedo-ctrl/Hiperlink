@@ -85,10 +85,12 @@ export function ServicesSection({ onShowScope }: ServicesSectionProps) {
             <p className="service-modal__summary">{selected.summary}</p>
             <h3 className="service-modal__label">Escopo técnico</h3>
             <ul className="service-modal__scope">
-              {selected.scope.map((item, i) => (
-                <li key={item}>
-                  <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                  {item}
+              {selected.scope.map((item) => (
+                <li key={item.label}>
+                  <span className="service-modal__scope-icon" aria-hidden="true">
+                    <Icon name={item.icon} size={18} />
+                  </span>
+                  {item.label}
                 </li>
               ))}
             </ul>
