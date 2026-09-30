@@ -1014,12 +1014,9 @@
   display: grid;
   place-items: center;
 }
-.hub__core .logo-plate {
+.hub__core .logo-img {
   position: relative;
   z-index: 1;
-  padding: 10px 14px;
-  border-radius: 18px;
-  box-shadow: 0 20px 60px -10px rgba(47, 139, 255, 0.7);
 }
 .hub__pulse {
   position: absolute;

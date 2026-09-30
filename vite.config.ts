@@ -11,13 +11,17 @@ function siteServer(): Plugin {
   const rewrite = (req: { url?: string }, _res: unknown, next: () => void) => {
     if (req.url) {
       const [path, query] = req.url.split('?');
-      if (path === '/psg-dados' || path === '/admin') req.url = `${path}/` + (query ? `?${query}` : '');
+      const qs = query ? `?${query}` : '';
+      if (path === '/psg-dados') req.url = `/psg-dados/${qs}`;
+      // /admin/login, /admin/clientes/123/editar… → aplicação do painel
+      else if (path === '/admin' || (path.startsWith('/admin/') && !/\.[a-z0-9]+$/i.test(path)))
+        req.url = `/admin/${qs}`;
     }
     next();
   };
   const mountApi = async (middlewares: Connect.Server, log: (msg: string) => void) => {
     const { createApp } = await import('./server/app.mjs');
-    const { printAdminBanner } = await import('./server/config.mjs');
+    const { printAdminBanner } = await import('./server/db.mjs');
     middlewares.use(createApp() as Connect.NextHandleFunction);
     printAdminBanner(log);
   };

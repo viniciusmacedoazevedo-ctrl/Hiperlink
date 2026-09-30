@@ -1,54 +1,72 @@
 /**
- * Conteúdo administrável (clientes e depoimentos).
- * A fonte oficial é o painel /admin (API em server/). O arquivo server/seed.json
- * é o conteúdo inicial e também o fallback quando a API não estiver disponível
+ * Conteúdo administrável exibido no site (clientes e depoimentos).
+ * Fonte oficial: API pública somente leitura (/api/public/*), alimentada pelo painel /admin.
+ * server/seed.json é o conteúdo inicial e também a reserva quando a API não estiver disponível
  * (ex.: publicação em hospedagem puramente estática).
  */
 import seed from '../../server/seed.json';
-import type { IconName } from '../components/common/Icon';
 
-export type Highlight = 'normal' | 'destaque' | 'super';
-
-export interface Client {
+export interface PublicClient {
   id: string;
   name: string;
-  /** URL de imagem enviada pelo painel (/uploads/…) ou vazio. */
+  slug: string;
+  /** URL de imagem da biblioteca de mídia (/media/…) ou vazio. */
   logo: string;
   /** Ícone exibido quando não há logo. */
-  icon: IconName | string;
+  icon: string;
+  category: string;
   description: string;
-  segment: string;
   caseText: string;
   services: string[];
-  highlight: Highlight;
-  active?: boolean;
-  order?: number;
 }
 
-export interface Testimonial {
+/** Estrutura entregue pelo backend: o frontend não precisa decidir quem é destaque. */
+export interface PublicClients {
+  featured: PublicClient | null;
+  highlights: PublicClient[];
+  normal: PublicClient[];
+}
+
+export interface PublicTestimonial {
   id: string;
   company: string;
+  companyLogo: string;
   personName: string;
   personRole: string;
-  companyLogo: string;
   personPhoto: string;
-  quote: string;
+  content: string;
   featured: boolean;
-  active?: boolean;
-  order?: number;
 }
 
-export interface SiteContent {
-  clients: Client[];
-  testimonials: Testimonial[];
+interface SeedClient {
+  name: string;
+  slug: string;
+  icon?: string;
+  caseText?: string;
+  services?: string[];
+  status?: string;
+  highlightLevel?: string;
 }
 
-type Seed = { clients: Client[]; testimonials: Testimonial[] };
+const seedClients = (seed.clients as SeedClient[])
+  .filter((c) => (c.status ?? 'PUBLISHED') === 'PUBLISHED')
+  .map((c) => ({
+    level: c.highlightLevel ?? 'NORMAL',
+    client: {
+      id: c.slug,
+      name: c.name,
+      slug: c.slug,
+      logo: '',
+      icon: c.icon ?? 'building',
+      category: '',
+      description: '',
+      caseText: c.caseText ?? '',
+      services: c.services ?? [],
+    } satisfies PublicClient,
+  }));
 
-/** Conteúdo inicial: apenas itens ativos, na ordem definida. */
-export const seedContent: SiteContent = {
-  clients: (seed as Seed).clients.filter((c) => c.active !== false).sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
-  testimonials: (seed as Seed).testimonials
-    .filter((t) => t.active !== false)
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+export const seedPublicClients: PublicClients = {
+  featured: seedClients.find((c) => c.level === 'FEATURED')?.client ?? null,
+  highlights: seedClients.filter((c) => c.level === 'HIGHLIGHT').map((c) => c.client),
+  normal: seedClients.filter((c) => c.level === 'NORMAL').map((c) => c.client),
 };

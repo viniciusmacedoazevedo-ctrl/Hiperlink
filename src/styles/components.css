@@ -115,10 +115,8 @@
   border-color: var(--switch-accent, var(--accent));
   background: rgba(255, 255, 255, 0.06);
 }
-.switch-link .logo-plate {
-  padding: 2px 6px;
-  border-radius: 999px;
-  box-shadow: none;
+.switch-link .logo-img {
+  margin-inline: 2px;
 }
 .switch-link--psg {
   --switch-accent: #4a9dff;
@@ -414,44 +412,43 @@
 }
 
 /* =====================================================================
-   Apresentação principal do logo (hero) — lâmina 3D integrada
+   Apresentação principal do logo (hero) — sem fundo, integrada ao ambiente
    ===================================================================== */
 .brand-badge {
   --badge-accent: var(--accent);
   --badge-glow: var(--accent-glow);
   position: relative;
   display: inline-block;
-  padding: 18px 28px 26px 0;
+  padding: 16px 30px 22px 6px;
   isolation: isolate;
 }
 .brand-badge--psg {
   --badge-accent: #4a9dff;
-  --badge-glow: rgba(47, 139, 255, 0.45);
+  --badge-glow: rgba(47, 139, 255, 0.5);
 }
 .brand-badge__glow {
   position: absolute;
-  left: 8%;
-  right: 20%;
-  top: 30%;
-  bottom: 0;
+  left: 4%;
+  right: 22%;
+  top: 22%;
+  bottom: 6%;
   z-index: -2;
   border-radius: 50%;
   background: var(--badge-glow);
-  filter: blur(40px);
-  opacity: 0.55;
+  filter: blur(46px);
+  opacity: 0.4;
   animation: badge-glow 6s ease-in-out infinite;
 }
 @keyframes badge-glow {
   50% {
-    opacity: 0.8;
+    opacity: 0.6;
     transform: scale(1.06);
   }
 }
 .brand-badge__traces {
   position: absolute;
   top: 0;
-  bottom: 8px;
-  left: 60%;
+  left: 62%;
   width: 60%;
   height: calc(100% - 8px);
   z-index: -1;
@@ -459,7 +456,6 @@
   fill: none;
   stroke: color-mix(in srgb, var(--badge-accent) 45%, transparent);
   stroke-width: 1.2;
-  vector-effect: non-scaling-stroke;
   mask-image: linear-gradient(90deg, #000 40%, transparent);
   -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent);
 }
@@ -475,143 +471,45 @@
   stroke: none;
   filter: drop-shadow(0 0 4px var(--badge-accent));
 }
-
 .brand-badge__card {
   position: relative;
   display: block;
-  border-radius: 20px;
-  transform: perspective(1100px) rotateX(calc(var(--rx) + 3deg)) rotateY(calc(var(--ry) - 5deg));
+  padding: 10px 14px;
+  transform: perspective(1100px) rotateX(calc(var(--rx) + 2deg)) rotateY(calc(var(--ry) - 4deg));
   animation: badge-float 7s ease-in-out infinite;
-  --accent-soft: color-mix(in srgb, var(--badge-accent) 18%, transparent);
+  --accent-soft: transparent;
+}
+.brand-badge__card .tilt__glare {
+  display: none;
 }
 @keyframes badge-float {
   50% {
     translate: 0 -6px;
   }
 }
-.brand-badge__card .tilt__glare {
-  z-index: 3;
-  border-radius: 20px;
-  background: radial-gradient(260px circle at var(--mx) var(--my), rgba(255, 255, 255, 0.45), transparent 60%);
-  mix-blend-mode: soft-light;
-}
-/* borda luminosa girando lentamente */
-.brand-badge__frame {
-  position: absolute;
-  inset: -1.5px;
-  border-radius: 21.5px;
-  padding: 1.5px;
-  background: conic-gradient(
-    from var(--badge-angle, 0deg),
-    transparent 0 55%,
-    var(--badge-accent) 70%,
-    #fff 76%,
-    var(--badge-accent) 82%,
-    transparent 95%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: badge-spin 6s linear infinite;
-  z-index: 2;
-}
-@property --badge-angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-@keyframes badge-spin {
-  to {
-    --badge-angle: 360deg;
-  }
-}
-/* superfície clara com espessura (a legibilidade do logo exige fundo claro) */
-.brand-badge__surface {
+.brand-badge__logo {
   position: relative;
-  display: grid;
-  place-items: center;
-  padding: 16px 26px;
-  border-radius: 20px;
-  overflow: hidden;
-  background:
-    radial-gradient(120% 90% at 0% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 60%),
-    linear-gradient(150deg, #ffffff 0%, #f6f6f4 60%, #e9e9e5 100%);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    inset 0 -2px 0 rgba(0, 0, 0, 0.08),
-    0 1px 0 #cfcfca,
-    0 2px 0 #c2c2bc,
-    0 3px 0 #b5b5ae,
-    0 4px 0 #a6a69f,
-    0 22px 40px -14px rgba(0, 0, 0, 0.85),
-    0 10px 50px -20px var(--badge-glow);
-}
-.brand-badge--psg .brand-badge__surface {
-  background:
-    radial-gradient(120% 90% at 0% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 60%),
-    linear-gradient(150deg, #ffffff 0%, #f4f7fc 60%, #e4eaf4 100%);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    inset 0 -2px 0 rgba(6, 17, 36, 0.08),
-    0 1px 0 #cdd6e4,
-    0 2px 0 #bfcadb,
-    0 3px 0 #afbcd1,
-    0 4px 0 #9fadc5,
-    0 22px 40px -14px rgba(0, 0, 0, 0.85),
-    0 10px 50px -20px var(--badge-glow);
-}
-/* textura técnica muito sutil na superfície */
-.brand-badge__surface::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px);
-  background-size: 10px 10px;
-  mask-image: linear-gradient(120deg, transparent 45%, #000);
-  -webkit-mask-image: linear-gradient(120deg, transparent 45%, #000);
-  pointer-events: none;
-}
-.brand-badge__surface .logo-img {
-  position: relative;
-}
-.brand-badge__sheen {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.55) 48%, transparent 58%);
-  mix-blend-mode: overlay;
-  transform: translateX(-120%);
-  animation: badge-sheen 7s 1.2s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes badge-sheen {
-  0%,
-  70% {
-    transform: translateX(-120%);
-  }
-  100% {
-    transform: translateX(120%);
-  }
+  filter: drop-shadow(0 0 0.8px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 0.8px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 0.6px rgba(255, 255, 255, 0.85)) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.6));
 }
 .brand-badge__corner {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border: 2px solid var(--badge-accent);
-  z-index: 3;
   pointer-events: none;
+  opacity: 0.85;
 }
 .brand-badge__corner--tl {
-  top: -8px;
-  left: -8px;
+  top: -4px;
+  left: -4px;
   border-right: 0;
   border-bottom: 0;
   border-top-left-radius: 6px;
 }
 .brand-badge__corner--br {
-  right: -8px;
-  bottom: -8px;
+  right: -4px;
+  bottom: -4px;
   border-left: 0;
   border-top: 0;
   border-bottom-right-radius: 6px;
@@ -620,18 +518,15 @@
   .brand-badge {
     padding-right: 16px;
   }
-  .brand-badge__surface {
-    padding: 12px 18px;
-  }
   .brand-badge .logo-img {
     width: auto !important;
-    max-width: 62vw;
+    max-width: 64vw;
     height: auto !important;
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .brand-badge__card {
-    transform: perspective(1100px) rotateX(3deg) rotateY(-5deg) !important;
+    transform: perspective(1100px) rotateX(2deg) rotateY(-4deg) !important;
   }
 }
 

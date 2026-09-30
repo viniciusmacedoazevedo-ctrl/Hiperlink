@@ -1,26 +1,31 @@
 import { Crown, Star } from 'lucide-react';
 import { clients as texts } from '../../data/hiperlink';
-import type { Client } from '../../data/siteContent';
-import { useSiteContent } from '../../hooks/useSiteContent';
+import type { PublicClient } from '../../data/siteContent';
+import { usePublicClients } from '../../hooks/useSiteContent';
 import { Counter } from '../../components/common/Counter';
 import { Icon } from '../../components/common/Icon';
 import { SectionHeading } from '../../components/common/SectionHeading';
 
+type Level = 'super' | 'destaque' | 'normal';
+
 /**
- * Seção de clientes montada automaticamente a partir do painel /admin:
- * - SUPER DESTAQUE → card grande (um único cliente);
- * - DESTAQUE → cards da grade com apresentação diferenciada (vêm primeiro);
- * - NORMAL → cards da grade.
+ * Seção de clientes montada a partir da API pública, que já entrega a estrutura pronta:
+ * - featured   → SUPER DESTAQUE: card grande (um único cliente);
+ * - highlights → DESTAQUE: cards da grade com apresentação diferenciada;
+ * - normal     → cards da grade.
  */
 export function ClientsSection() {
-  const content = useSiteContent();
-  const list = content?.clients ?? null;
-  const superClient = list?.find((c) => c.highlight === 'super') ?? null;
-  const grid = list
-    ? [...list].sort((a, b) => rank(a) - rank(b)) // estável: mantém a ordem de exibição dentro de cada nível
+  const data = usePublicClients();
+  const superClient = data?.featured ?? null;
+  const grid: { client: PublicClient; level: Level }[] | null = data
+    ? [
+        ...(data.featured ? [{ client: data.featured, level: 'super' as const }] : []),
+        ...data.highlights.map((client) => ({ client, level: 'destaque' as const })),
+        ...data.normal.map((client) => ({ client, level: 'normal' as const })),
+      ]
     : null;
 
-  if (list && list.length === 0) return null;
+  if (grid && grid.length === 0) return null;
 
   return (
     <section id="clientes" className="section section--light hl-clients" aria-labelledby="clientes-title">
@@ -58,7 +63,9 @@ export function ClientsSection() {
               ? Array.from({ length: 9 }, (_, i) => (
                   <li key={i} className="client-tile client-tile--skeleton" aria-hidden="true" />
                 ))
-              : grid.map((c, i) => <ClientTile key={c.id} client={c} index={i} />)}
+              : grid.map(({ client, level }, i) => (
+                  <ClientTile key={client.id} client={client} level={level} index={i} />
+                ))}
           </ul>
         </div>
       </div>
@@ -66,9 +73,7 @@ export function ClientsSection() {
   );
 }
 
-const rank = (c: Client) => (c.highlight === 'super' ? 0 : c.highlight === 'destaque' ? 1 : 2);
-
-function SuperClientCard({ client }: { client: Client }) {
+function SuperClientCard({ client }: { client: PublicClient }) {
   const text = client.caseText || client.description;
   return (
     <article className="featured-client" data-reveal="left">
@@ -82,7 +87,7 @@ function SuperClientCard({ client }: { client: Client }) {
         )}
       </div>
       <h3>{client.name}</h3>
-      {client.segment && <p className="featured-client__segment">{client.segment}</p>}
+      {client.category && <p className="featured-client__segment">{client.category}</p>}
       {text && <p>{text}</p>}
       {client.services.length > 0 && (
         <ul className="featured-client__tags" aria-label="Serviços prestados">
@@ -95,8 +100,7 @@ function SuperClientCard({ client }: { client: Client }) {
   );
 }
 
-function ClientTile({ client: c, index: i }: { client: Client; index: number }) {
-  const level = c.highlight;
+function ClientTile({ client: c, level, index: i }: { client: PublicClient; level: Level; index: number }) {
   return (
     <li
       className={`client-tile client-tile--${level}`}
@@ -118,7 +122,7 @@ function ClientTile({ client: c, index: i }: { client: Client; index: number }) 
         </span>
       )}
       <span className="client-tile__name">{c.name}</span>
-      {c.segment && <span className="client-tile__segment">{c.segment}</span>}
+      {c.category && <span className="client-tile__segment">{c.category}</span>}
     </li>
   );
 }

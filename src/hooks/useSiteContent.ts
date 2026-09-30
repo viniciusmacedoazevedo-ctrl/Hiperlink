@@ -1,28 +1,36 @@
 import { useEffect, useState } from 'react';
-import { seedContent, type SiteContent } from '../data/siteContent';
+import { seedPublicClients, type PublicClients, type PublicTestimonial } from '../data/siteContent';
 
-let request: Promise<SiteContent> | null = null;
+const cache = new Map<string, Promise<unknown>>();
 
-/** Busca uma única vez por página o conteúdo publicado no painel; em caso de falha usa o conteúdo inicial. */
-function fetchContent(): Promise<SiteContent> {
-  request ??= fetch('/api/public/content', { headers: { accept: 'application/json' } })
-    .then((r) => {
-      if (!r.ok || !r.headers.get('content-type')?.includes('application/json')) throw new Error(String(r.status));
-      return r.json() as Promise<SiteContent>;
-    })
-    .catch(() => seedContent);
-  return request;
+/** GET único por página na API pública; em falha usa a reserva informada. */
+function getPublic<T>(path: string, fallback: T): Promise<T> {
+  if (!cache.has(path)) {
+    cache.set(
+      path,
+      fetch(`/api/public/${path}`, { headers: { accept: 'application/json' } })
+        .then((r) => {
+          if (!r.ok || !r.headers.get('content-type')?.includes('application/json')) throw new Error(String(r.status));
+          return r.json();
+        })
+        .catch(() => fallback),
+    );
+  }
+  return cache.get(path) as Promise<T>;
 }
 
-/** `null` enquanto carrega. */
-export function useSiteContent(): SiteContent | null {
-  const [content, setContent] = useState<SiteContent | null>(null);
+function usePublic<T>(path: string, fallback: T): T | null {
+  const [data, setData] = useState<T | null>(null);
   useEffect(() => {
     let alive = true;
-    fetchContent().then((c) => alive && setContent(c));
+    getPublic(path, fallback).then((d) => alive && setData(d));
     return () => {
       alive = false;
     };
-  }, []);
-  return content;
+  }, [path]);
+  return data;
 }
+
+/** `null` enquanto carrega. */
+export const usePublicClients = () => usePublic<PublicClients>('clients', seedPublicClients);
+export const usePublicTestimonials = () => usePublic<PublicTestimonial[]>('testimonials', []);

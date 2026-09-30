@@ -1,6 +1,6 @@
 import { Quote, UserRound } from 'lucide-react';
 import { testimonials as texts } from '../../data/hiperlink';
-import { useSiteContent } from '../../hooks/useSiteContent';
+import { usePublicTestimonials } from '../../hooks/useSiteContent';
 import { SectionHeading } from '../../components/common/SectionHeading';
 
 /**
@@ -8,11 +8,10 @@ import { SectionHeading } from '../../components/common/SectionHeading';
  * Sem depoimentos ativos, a seção não é exibida (nenhum texto fictício é mostrado).
  */
 export function TestimonialsSection() {
-  const content = useSiteContent();
-  const items = content?.testimonials ?? [];
-  if (!items.length) return null;
-
-  const ordered = [...items].sort((a, b) => Number(b.featured) - Number(a.featured));
+  const items = usePublicTestimonials();
+  if (!items?.length) return null;
+  // a API já entrega na ordem correta (destaques primeiro)
+  const ordered = items;
 
   return (
     <section id="depoimentos" className="section section--light hl-testimonials" aria-labelledby="depoimentos-title">
@@ -39,7 +38,7 @@ export function TestimonialsSection() {
                 </div>
                 <Quote className="testimonial-card__mark" size={26} aria-hidden="true" />
                 <blockquote>
-                  <p>{t.quote}</p>
+                  <p>{t.content}</p>
                 </blockquote>
                 <figcaption>
                   {t.personPhoto ? (

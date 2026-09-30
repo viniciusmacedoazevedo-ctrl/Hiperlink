@@ -7,7 +7,8 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 process.env.NODE_ENV ||= 'production';
-const { ROOT, printAdminBanner } = await import('./config.mjs');
+const { ROOT } = await import('./config.mjs');
+const { printAdminBanner } = await import('./db.mjs');
 const { createApp } = await import('./app.mjs');
 
 const DIST = resolve(ROOT, 'dist');
@@ -26,8 +27,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// URLs limpas: /psg-dados e /admin sem barra final
-app.get(['/psg-dados', '/admin'], (req, res) => res.sendFile(resolve(DIST, req.path.slice(1), 'index.html')));
+// URLs limpas: /psg-dados sem barra final; /admin/* é uma aplicação de página única
+app.get('/psg-dados', (_req, res) => res.sendFile(resolve(DIST, 'psg-dados', 'index.html')));
+app.get(['/admin', /^\/admin\/(?!assets\/).*/], (_req, res) => res.sendFile(resolve(DIST, 'admin', 'index.html')));
 
 app.use(
   express.static(DIST, {

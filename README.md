@@ -2,13 +2,13 @@
 
 Duas landing pages institucionais:
 
-| Rota         | Empresa                                                 | Fonte do conteúdo                        |
-| ------------ | ------------------------------------------------------- | ---------------------------------------- |
-| `/`          | **Hiperlink — Gestão em Tecnologia**                    | PowerPoint "Apresentação Hiperlink"      |
+| Rota         | Empresa                                                    | Fonte do conteúdo                                                                  |
+| ------------ | ---------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `/`          | **Hiperlink — Gestão em Tecnologia**                       | PowerPoint "Apresentação Hiperlink"                                                |
 | `/psg-dados` | **PSG Dados — Políticas, Segurança e Governança de Dados** | PDF "PSG Dados CNJ 243" + banner da PSG + dados comerciais informados pelo cliente |
-| `/admin`     | **Área administrativa** (clientes e depoimentos)         | —                                        |
+| `/admin`     | **Área administrativa** (clientes e depoimentos)           | —                                                                                  |
 
-Stack: **Vite + React + TypeScript**, **Three.js** (cenas 3D carregadas sob demanda), CSS puro com tokens, ícones `lucide-react`, fontes Montserrat/Inter auto-hospedadas. A área administrativa usa uma API **Node/Express** (`server/`) com armazenamento em JSON.
+Stack: **Vite + React + TypeScript**, **Three.js** (cenas 3D carregadas sob demanda), CSS puro com tokens, ícones `lucide-react`, fontes Montserrat/Inter auto-hospedadas. A área administrativa usa uma API **Node/Express** (`server/`) com banco **SQLite**.
 
 ## Como rodar
 
@@ -22,34 +22,73 @@ npm run format     # prettier
 
 ## Área administrativa (`/admin`)
 
-1. Copie `.env.example` para `.env` e defina `ADMIN_PASSWORD` (ou `ADMIN_PASSWORD_HASH`, gerado com `npm run admin:hash -- "sua senha"`).
-2. Rode `npm run dev` e acesse `/admin`. Sem senha definida, em desenvolvimento é gerada uma **senha temporária mostrada no terminal**. Em produção, o login fica desativado até a senha ser configurada.
+### Primeiro acesso
 
-O painel tem:
+1. `npm install` (instala também o SQLite — `better-sqlite3`).
+2. Copie `.env.example` para `.env` e defina `ADMIN_EMAIL` e `ADMIN_PASSWORD` (mínimo 10 caracteres).
+3. Rode `npm run dev` e acesse `/admin/login` com esse e-mail e senha.
 
-- **Dashboard:** totais de clientes, clientes ativos, clientes em destaque, depoimentos e depoimentos ativos.
-- **Clientes:** listar, cadastrar, editar e excluir. Os campos são nome, logo (upload), descrição, segmento, texto do case, serviços prestados, status ativo/inativo, ordem de exibição e nível de destaque.
-- **Depoimentos:** listar, cadastrar, editar, excluir e ordenar. Os campos são empresa, pessoa, cargo, logo, foto (opcional), depoimento, status, ordem e destaque.
-- **Configurações:** escolher o super destaque, marcar os destaques e definir a ordem de exibição.
+Se `ADMIN_PASSWORD` ficar vazio, em desenvolvimento é gerada uma **senha temporária mostrada no terminal**. Em produção, nenhum administrador é criado sem senha: use as variáveis acima ou
 
-Níveis de destaque dos clientes:
+```bash
+npm run admin:create -- --email voce@empresa.com.br --name "Seu nome"   # cria ou redefine a senha de um administrador
+```
 
-| Nível          | No site                                                                 |
-| -------------- | ----------------------------------------------------------------------- |
-| Super destaque | Card grande da seção “Nossos Clientes” (apenas um cliente por vez).     |
-| Destaque       | Card da grade com borda amarela e estrela, exibido antes dos normais.   |
-| Normal         | Card padrão da grade.                                                   |
+### Rotas do painel
 
-- A seção de depoimentos mostra só os **ativos** e fica **oculta** quando não há nenhum.
-- Os dados ficam em `data/content.json` e as imagens em `data/uploads/`. A pasta `data/` não é versionada, então faça backup dela no servidor.
-- O conteúdo inicial (os 9 clientes do PowerPoint, com o Grupo Potiguar como super destaque) está em `server/seed.json`. Ele é usado na primeira execução e como reserva quando a API não está disponível.
+| Rota                                           | Conteúdo                                                                  |
+| ---------------------------------------------- | ------------------------------------------------------------------------- |
+| `/admin/login` · `/admin/logout`               | Entrada e saída                                                           |
+| `/admin/dashboard`                             | Indicadores de clientes e depoimentos, últimos cadastros, atalhos, avisos |
+| `/admin/clientes` · `/novo` · `/:id/editar`    | Clientes (tabela, filtros por status, busca, lixeira)                     |
+| `/admin/depoimentos` · `/novo` · `/:id/editar` | Depoimentos, com **cliente relacionado** (usa a logo do cliente)          |
+| `/admin/midia`                                 | Biblioteca de imagens (logos, fotos)                                      |
+| `/admin/configuracoes/usuarios`                | Usuários administrativos (somente Administrador)                          |
+| `/admin/configuracoes/logs`                    | Logs de auditoria (somente Administrador)                                 |
 
-Segurança:
+### Regras de conteúdo
 
-- A sessão fica em cookie `HttpOnly` + `SameSite=Strict` (e `Secure` em HTTPS) e expira em 8 horas.
-- O login bloqueia após 5 tentativas erradas em 15 minutos.
-- As requisições de escrita exigem um cabeçalho específico, como proteção contra CSRF.
-- Os uploads aceitam só PNG, JPG ou WebP de até 2 MB, com o tipo conferido pelo conteúdo do arquivo.
+- **Status:** Rascunho, Publicado ou Arquivado. O site mostra apenas o que está **Publicado** e não excluído.
+- **Nível de destaque dos clientes:**
+
+| Nível          | No site                                                                                                          |
+| -------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Super destaque | Card grande da seção “Nossos Clientes”. **Apenas um por vez**: ao escolher outro, o anterior passa a “Destaque”. |
+| Destaque       | Card da grade com borda amarela e estrela, exibido antes dos normais.                                            |
+| Normal         | Card padrão da grade.                                                                                            |
+
+- **Exclusão lógica:** excluir move para a **lixeira** (`deleted_at`); o Administrador pode restaurar.
+- A ordem de exibição é definida no painel e aplicada pelo servidor.
+- A seção de depoimentos fica **oculta** no site quando não há depoimentos publicados.
+
+### Perfis
+
+| Permissão                                  | Administrador | Editor |
+| ------------------------------------------ | :-----------: | :----: |
+| Criar/editar clientes, depoimentos e mídia |       ✓       |   ✓    |
+| Alterar status, destaque e ordem           |       ✓       |   ✓    |
+| Excluir e restaurar (lixeira)              |       ✓       |   —    |
+| Usuários, perfis e logs de auditoria       |       ✓       |   —    |
+
+### API
+
+- **Pública (somente leitura, usada pelo site):** `GET /api/public/clients` → `{ featured, highlights, normal }` e `GET /api/public/testimonials`.
+- **Administrativa (exige sessão):** `/api/admin/clients`, `/api/admin/testimonials` (GET, POST, PUT, `PATCH …/:id/status|highlight|order`, DELETE, `POST …/:id/restore`), `/api/admin/media`, `/api/admin/users`, `/api/admin/audit-logs`, `/api/admin/dashboard`.
+
+### Dados
+
+- Banco **SQLite** em `data/hiperlink.db` (tabelas `users`, `roles`, `sessions`, `clients`, `testimonials`, `media`, `audit_logs`) e imagens em `data/media/`. A pasta `data/` não é versionada: **faça backup dela** no servidor.
+- Na primeira execução o banco é criado com o conteúdo de `server/seed.json` (os 9 clientes do PowerPoint, Grupo Potiguar como super destaque). Se existir um `data/content.json` da versão anterior do painel, ele é migrado automaticamente.
+- O site usa `server/seed.json` como reserva quando a API não está disponível.
+
+### Segurança
+
+- Senhas com hash **scrypt** (nunca em texto puro); e-mail único; usuários ativos/inativos; registro do último acesso.
+- Sessão em cookie `HttpOnly` + `SameSite=Strict` (e `Secure` em HTTPS), expira em 8 horas; o token é guardado no banco apenas como hash.
+- Login bloqueia após 5 tentativas erradas em 15 minutos.
+- Requisições de escrita exigem cabeçalho específico (proteção contra CSRF).
+- Uploads: só PNG, JPG ou WebP de até 2 MB, com o tipo conferido pelo conteúdo do arquivo.
+- Toda alteração gera **log de auditoria** (quem, quando, IP, dados anteriores e novos).
 - Todos os campos são validados no servidor, e `/admin` responde com `noindex`.
 
 ## Estrutura
@@ -94,7 +133,8 @@ Nenhum dado abaixo foi inventado:
 ## Logos
 
 - Os logos são exibidos **sem alteração** no desenho (sem recolorir, redesenhar ou distorcer).
-- No hero, cada logo aparece numa lâmina 3D de superfície clara (`BrandBadge`), com borda luminosa, brilho discreto e trilhas de circuito. Nessa lâmina é usada uma versão com o fundo branco convertido em transparência (`*-logo-transparent.png`), com o mesmo desenho.
+- Os logos são usados **sem fundo branco** (`src/assets/logos/*-logo-transparent.png`, gerados por `docs/remove-logo-bg.py` a partir dos originais em `docs/assets-originais/`). Um contorno branco fino (CSS `drop-shadow`) mantém as partes escuras legíveis sobre o fundo escuro.
+- No hero, o logo aparece sobre um efeito 3D (`BrandBadge`) com brilho discreto e trilhas de circuito, sem placa branca.
 - O logo do cabeçalho só aparece depois do hero, para a marca não se repetir na mesma área.
 - **Recomendado:** enviar o logo da Hiperlink em alta resolução (SVG ou PNG ≥ 800 px). O arquivo recebido tem 200×200 px, e a área útil do logo tem só 142×47 px. Basta substituir `src/assets/logos/hiperlink-logo.png` e ajustar `width`/`height` em `src/components/common/Logo.tsx`.
 
@@ -103,7 +143,7 @@ Nenhum dado abaixo foi inventado:
 **Com a área administrativa (recomendado):** publique num servidor Node (VPS, Render, Railway, Fly.io etc.):
 
 ```bash
-npm ci && npm run build && npm start   # PORT, ADMIN_PASSWORD(_HASH) e DATA_DIR via ambiente
+npm ci && npm run build && npm start   # PORT, ADMIN_EMAIL, ADMIN_PASSWORD e DATA_DIR via ambiente
 ```
 
 Use HTTPS (proxy reverso) e um volume persistente para a pasta `data/`.

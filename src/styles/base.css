@@ -425,27 +425,18 @@ button {
 }
 
 /* =====================================================================
-   Logo sobre placa clara (logos oficiais têm fundo branco)
+   Logos sem fundo — contorno claro fino para a tinta escura ler no fundo escuro
    ===================================================================== */
-.logo-plate {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 12px;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.6) inset,
-    0 10px 30px -14px rgba(0, 0, 0, 0.6);
-  line-height: 0;
-}
-.logo-plate--psg {
-  padding: 4px 10px;
-}
 .logo-img {
+  display: block;
   height: auto;
   max-width: none;
   object-fit: contain;
+  filter: drop-shadow(0 0 0.7px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 0.7px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 0.5px rgba(255, 255, 255, 0.8));
+}
+.logo-img--on-light {
+  filter: none;
 }
 
 /* =====================================================================

@@ -1,10 +1,10 @@
 import { useState, type FormEvent } from 'react';
 import { LockKeyhole } from 'lucide-react';
-import { api } from './api';
-import { errorMessage } from './ui';
-import { Logo } from '../components/common/Logo';
+import { api, type SessionUser } from '../api';
+import { errorMessage } from '../ui';
+import { Logo } from '../../components/common/Logo';
 
-export function Login({ enabled, onSuccess }: { enabled: boolean; onSuccess: () => void }) {
+export function Login({ onSuccess }: { onSuccess: (u: SessionUser) => void }) {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -14,8 +14,8 @@ export function Login({ enabled, onSuccess }: { enabled: boolean; onSuccess: () 
     setBusy(true);
     setError('');
     try {
-      await api.login(String(data.get('username') ?? ''), String(data.get('password') ?? ''));
-      onSuccess();
+      const { user } = await api.login(String(data.get('email') ?? ''), String(data.get('password') ?? ''));
+      onSuccess(user);
     } catch (err) {
       setError(errorMessage(err));
     } finally {
@@ -27,20 +27,15 @@ export function Login({ enabled, onSuccess }: { enabled: boolean; onSuccess: () 
     <main className="adm-login">
       <div className="grid-bg" aria-hidden="true" />
       <form className="adm-login__card" onSubmit={submit}>
-        <Logo brand="hiperlink" height={44} />
+        <Logo brand="hiperlink" height={48} eager />
         <h1>
           <LockKeyhole size={20} aria-hidden="true" /> Área administrativa
         </h1>
-        <p className="adm-login__lead">Gerencie clientes e depoimentos do site.</p>
-        {!enabled && (
-          <p className="adm-alert" role="alert">
-            O login está desativado: defina <code>ADMIN_PASSWORD</code> no arquivo <code>.env</code> do servidor.
-          </p>
-        )}
-        <label className="adm-field__label" htmlFor="adm-user">
-          Usuário
+        <p className="adm-login__lead">Entre com seu e-mail e senha.</p>
+        <label className="adm-field__label" htmlFor="adm-email">
+          E-mail
         </label>
-        <input id="adm-user" name="username" className="adm-input" autoComplete="username" required />
+        <input id="adm-email" name="email" type="email" className="adm-input" autoComplete="username" required />
         <label className="adm-field__label" htmlFor="adm-pass">
           Senha
         </label>
@@ -57,7 +52,7 @@ export function Login({ enabled, onSuccess }: { enabled: boolean; onSuccess: () 
             {error}
           </p>
         )}
-        <button type="submit" className="btn btn--primary btn--block" disabled={busy || !enabled}>
+        <button type="submit" className="btn btn--primary btn--block" disabled={busy}>
           {busy ? 'Entrando…' : 'Entrar'}
         </button>
         <a href="/" className="adm-login__back">

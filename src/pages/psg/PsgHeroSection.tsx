@@ -18,7 +18,7 @@ export function PsgHeroSection() {
       <div className="container psg-hero__inner">
         <div className="psg-hero__copy">
           <div className="psg-hero__logo" data-reveal>
-            <BrandBadge brand="psg" height={84} />
+            <BrandBadge brand="psg" height={100} />
           </div>
           <p className="psg-hero__eyebrow" data-reveal data-reveal-delay="80">
             <span className="psg-hero__badge" aria-hidden="true">
