@@ -489,6 +489,9 @@
 }
 .brand-badge__logo {
   position: relative;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.6));
+}
+.brand-badge__logo.logo-img--outline {
   filter: drop-shadow(0 0 0.8px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 0.8px rgba(255, 255, 255, 0.95))
     drop-shadow(0 0 0.6px rgba(255, 255, 255, 0.85)) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.6));
 }

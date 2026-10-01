@@ -93,7 +93,7 @@ export function Header({ brand, homeLabel, nav, cta, switchLink, switchLinkMobil
         <div className="site-header__progress" ref={progressRef} aria-hidden="true" />
         <div className="container site-header__inner">
           <a href="#topo" className="site-header__brand" aria-label={homeLabel}>
-            <Logo brand={brand} height={brand === 'hiperlink' ? 40 : 44} eager />
+            <Logo brand={brand} height={brand === 'hiperlink' ? 36 : 44} eager />
           </a>
 
           <nav className="site-nav" aria-label="Navegação principal">

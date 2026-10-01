@@ -37,7 +37,7 @@ export function SiteFooter({
       <div className="container">
         <div className="site-footer__top">
           <div className="site-footer__brand">
-            <Logo brand={brand} height={brand === 'hiperlink' ? 42 : 52} />
+            <Logo brand={brand} height={brand === 'hiperlink' ? 40 : 52} />
             <p>{tagline}</p>
           </div>
 

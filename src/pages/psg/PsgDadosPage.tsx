@@ -27,13 +27,14 @@ export function PsgDadosPage() {
       aria-label="Voltar para a Hiperlink"
     >
       <ArrowLeft size={16} aria-hidden="true" />
-      <Logo brand="hiperlink" height={24} />
+      <Logo brand="hiperlink-mark" height={24} alt="" />
+      <span className="switch-link__name">Hiperlink</span>
     </TransitionLink>
   );
   const backLinkMobile = (
     <TransitionLink href="/" theme="hiperlink" className="switch-link switch-link--hiperlink">
       <ArrowLeft size={16} aria-hidden="true" />
-      <Logo brand="hiperlink" height={26} />
+      <Logo brand="hiperlink-mark" height={26} alt="" />
       <span>Voltar para a Hiperlink</span>
     </TransitionLink>
   );

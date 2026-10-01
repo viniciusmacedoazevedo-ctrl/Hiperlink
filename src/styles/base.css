@@ -432,11 +432,10 @@ button {
   height: auto;
   max-width: none;
   object-fit: contain;
+}
+.logo-img--outline {
   filter: drop-shadow(0 0 0.7px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 0.7px rgba(255, 255, 255, 0.95))
     drop-shadow(0 0 0.5px rgba(255, 255, 255, 0.8));
-}
-.logo-img--on-light {
-  filter: none;
 }
 
 /* =====================================================================

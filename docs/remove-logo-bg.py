@@ -73,5 +73,4 @@ def process(src, out, box, pad, resize_w=None, thr=236):
 
 
 if __name__ == "__main__":
-    process("docs/assets-originais/hiperlink-logo-original.png", "src/assets/logos/hiperlink-logo-transparent.png", (29, 76, 171, 123), 6)
     process("docs/assets-originais/psg-dados-logo-pdf.png", "src/assets/logos/psg-dados-logo-transparent.png", (117, 23, 1032, 455), 16, 720)

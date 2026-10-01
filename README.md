@@ -133,10 +133,9 @@ Nenhum dado abaixo foi inventado:
 ## Logos
 
 - Os logos são exibidos **sem alteração** no desenho (sem recolorir, redesenhar ou distorcer).
-- Os logos são usados **sem fundo branco** (`src/assets/logos/*-logo-transparent.png`, gerados por `docs/remove-logo-bg.py` a partir dos originais em `docs/assets-originais/`). Um contorno branco fino (CSS `drop-shadow`) mantém as partes escuras legíveis sobre o fundo escuro.
+- **Hiperlink:** logo completo enviado pelo cliente, já sem fundo (`src/assets/logos/hiperlink-logo.webp`), e o símbolo “HL” (`hiperlink-simbolo.webp`), usado em espaços pequenos (botão “Hiperlink” na página da PSG Dados e ícones do site). Originais em `docs/assets-originais/`.
+- **PSG Dados:** fundo branco removido por `docs/remove-logo-bg.py` (`psg-dados-logo-transparent.png`). Como as letras são escuras, recebe um contorno branco fino (CSS `drop-shadow`) para leitura no fundo escuro.
 - No hero, o logo aparece sobre um efeito 3D (`BrandBadge`) com brilho discreto e trilhas de circuito, sem placa branca.
-- O logo do cabeçalho só aparece depois do hero, para a marca não se repetir na mesma área.
-- **Recomendado:** enviar o logo da Hiperlink em alta resolução (SVG ou PNG ≥ 800 px). O arquivo recebido tem 200×200 px, e a área útil do logo tem só 142×47 px. Basta substituir `src/assets/logos/hiperlink-logo.png` e ajustar `width`/`height` em `src/components/common/Logo.tsx`.
 
 ## Deploy
 

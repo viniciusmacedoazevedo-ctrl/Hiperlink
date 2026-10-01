@@ -377,6 +377,7 @@ export interface PsgContact {
   email: string | null;
   website: string | null;
   addressLines: string[];
+  cnpj: string;
 }
 
 export const contact: PsgContact = {
@@ -387,4 +388,5 @@ export const contact: PsgContact = {
   email: 'comercial@psgdados.com.br',
   website: 'www.psgdados.com.br',
   addressLines: ['Av. Amintas Barros, 3700, Sala 701 A, CTC', 'Lagoa Nova, Natal/RN'],
+  cnpj: '48.018.890/0001-95',
 };
